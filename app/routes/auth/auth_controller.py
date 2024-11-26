@@ -23,8 +23,8 @@ async def login(model: OAuth2PasswordRequestForm = Depends()):
     return user
 
 @router.post('/forgot-password/get-code', status_code=status.HTTP_201_CREATED)
-async def get_password_reset_code(model: ForgotPassword):
-    user =await auth_service.get_password_reset_code(model)
+async def init_password_reset(model: ForgotPassword):
+    user =await auth_service.init_password_reset(model)
     return user
 
 @router.put('/forgot-password/', status_code=status.HTTP_201_CREATED)

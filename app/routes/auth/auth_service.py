@@ -95,7 +95,7 @@ class AuthService:
             # If anything fails, return a server error
             server_error(status.HTTP_500_INTERNAL_SERVER_ERROR, str(e))
             
-    async def get_password_reset_code(self, model: ForgotPassword):
+    async def init_password_reset(self, model: ForgotPassword):
         
         user = await self.collection_name.find_one({"email":model.email})
         if user is None:
