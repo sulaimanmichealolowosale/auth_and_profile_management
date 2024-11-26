@@ -1,169 +1,202 @@
-<h1>Auth and Profile Management Service API Overview</h1>
-<p>This is a backend service for authentication and profile management built using FastAPI. The application handles:</p>
+# 🎉 Auth and Profile Management Service API Overview 🎉
 
-<ul>
-<li>User registration with email verification.</li>
-<li>Secure login with token generation.</li>
-<li>Password reset functionality.</li>
-<li>User profile management, including email verification.</li>
+This is a backend service for authentication and profile management built using FastAPI. The application handles:
 
-</ul>
+- ✅ User registration with email verification.
+- 🔒 Secure login with token generation.
+- 🔄 Password reset functionality.
+- 🧑‍💻 User profile management, including email verification.
 
-<p>The logic is separated into services (business logic) and controllers (API endpoints), ensuring clean code and scalability.</p>
+---
 
-<h2>Project Structure</h2>
-<strong>Key files and their roles:</strong>
+## 📂 Project Structure
 
-<ul>
-    <li>auth_service.py: Contains authentication business logic.</li>
-    <li>auth_controller.py: Handles API endpoints for authentication.</li>
-    <li>profile_service.py: Manages profile-related logic.</li>
-    <li>profile_controller.py: Handles API endpoints for user profiles.</li>
-    <li>config/db.py: Database connection setup using MongoDB.</li>
-    <li>
-    utils/: Contains helper functions such as:
-        <ul>
-            <li>error_handler.py: Custom error responses.</li>
-            <li>password_crypt.py: Password hashing and verification.</li>
-            <li>email_conf.py: Email utility functions for sending emails.</li>
-            <li>oauth2.py: JWT token creation and verification.</li>
-        </ul>
-    </li>
+### Key Files and Their Roles 🗂️
 
-    <li>schemas/user_serializer.py: Serializes database user data into JSON format.
-    Environment Variables</li>
+- `auth_service.py`: Handles authentication business logic.
+- `auth_controller.py`: Manages API endpoints for authentication.
+- `profile_service.py`: Deals with profile-related logic.
+- `profile_controller.py`: Manages API endpoints for user profiles.
+- `config/db.py`: Sets up the database connection using MongoDB.
+- `utils/`: Helper functions and utilities:
+  - `error_handler.py`: Custom error responses. 🚨
+  - `password_crypt.py`: Password hashing and verification. 🔑
+  - `email_conf.py`: Sends email notifications. 📧
+  - `oauth2.py`: JWT token creation and verification. 🎟️
+- `schemas/user_serializer.py`: Serializes database user data into JSON format. 🗃️
 
-</ul>
+---
 
-<h3>Ensure you have the following environment variables set up:</h3>
+## 🌟 Environment Variables
 
-MONGO_URI=<Your MongoDB connection URI>
-SECRET_KEY=<Your JWT secret key>
-ALGORITHM=<Your JWT algorithm>
-EMAIL_HOST=<Email host>
-EMAIL_PORT=<Email port>
-MAIL_SERVER=<Email server>
-EMAIL_USER=<Email username>
-EMAIL_PASSWORD=<Email password>
+Ensure you have the following environment variables set up. No shortcuts here! 🛠️
 
-Authentication Endpoints
+<pre>MONGO_URI=<Your MongoDB connection URI> SECRET_KEY=<Your JWT secret key> ALGORITHM=<Your JWT algorithm> EMAIL_HOST=<Email host> EMAIL_PORT=<Email port> MAIL_SERVER=<Email server> EMAIL_USER=<Email username> EMAIL_PASSWORD=<Email password></pre>
 
-1. Register User
-   Registers a new user and sends a verification email.
+---
 
-Endpoint: POST /api/auth/register
-Request Body:
+## 🔑 Authentication Endpoints
 
+### 1. 🚀 Register User
+
+Registers a new user and sends a verification email.
+
+**Endpoint:** `POST /api/auth/register`
+
+**Request Body:**
+
+```json
 {
-"username": "john_doe",
-"email": "john.doe@example.com",
-"password": "securepassword"
+  "username": "john_doe",
+  "email": "john.doe@example.com",
+  "password": "securepassword"
 }
-Response:
+```
 
+**Response**
+
+```json
 {
-"id": "user_id",
-"username": "john_doe",
-"email": "john.doe@example.com",
-"verified": false
+  "id": "user_id",
+  "username": "john_doe",
+  "email": "john.doe@example.com",
+  "verified": false
 }
+```
 
-2. Login User
-   Logs in a user and generates access and refresh tokens.
+### 2. 🔓 Login User
 
-Endpoint: POST /api/auth/login
-Request Body (Form):
+Logs in a user and generates access and refresh tokens.
+
+**Endpoint:** POST /api/auth/login
+
+**Request Body (Form):**
 
 username: john.doe@example.com
 password: securepassword
-Response:
 
+**Response**
+
+```json
 {
-"user": {
-"id": "user_id",
-"username": "john_doe",
-"email": "john.doe@example.com"
-},
-"access_token": "jwt_access_token",
-"refresh_token": "jwt_refresh_token"
+  "user": {
+    "id": "user_id",
+    "username": "john_doe",
+    "email": "john.doe@example.com"
+  },
+  "access_token": "jwt_access_token",
+  "refresh_token": "jwt_refresh_token"
 }
+```
 
-3. Request Password Reset Code
-   Sends a password reset code to the user's email.
+## 3. 📧 Request Password Reset Code
 
-Endpoint: POST /api/auth/forgot-password/get-code
-Request Body:
+Sends a password reset code to the user's email.
 
+**Endpoint:** POST /api/auth/forgot-password/get-code
+
+**Request Body:**
+
+```json
 {
-"email": "john.doe@example.com"
+  "email": "john.doe@example.com"
 }
-Response:
+```
 
+**Response:**
+
+```json
 {
-"message": "Password reset code was sent to the provided email"
+  "message": "Password reset code was sent to the provided email"
 }
+```
 
-4. Reset Password
-   Resets the user's password using the code.
+## 4. 🔄 Reset Password
 
-Endpoint: PUT /api/auth/forgot-password/
-Request Body:
+Resets the user's password using the code.
 
+**Endpoint:** PUT /api/auth/forgot-password/
+
+**Request Body:**
+
+```json
 {
-"email": "john.doe@example.com",
-"code": "123456",
-"password": "new_secure_password"
+  "email": "john.doe@example.com",
+  "code": "123456",
+  "password": "new_secure_password"
 }
-Response:
+```
 
+**Response:**
+
+```json
 {
-"message": "Password reset was successful",
-"profile": {
-"id": "user_id",
-"username": "john_doe",
-"email": "john.doe@example.com",
-"verified": false
+  "message": "Password reset was successful",
+  "profile": {
+    "id": "user_id",
+    "username": "john_doe",
+    "email": "john.doe@example.com",
+    "verified": false
+  }
 }
-}
-Profile Management Endpoints
+```
 
-1. Verify Email
-   Verifies a user's email using a code.
+## 🧑‍💼 Profile Management Endpoints
 
-Endpoint: POST /api/profile/verify/{code}
-Headers:
+## 1. ✅ Verify Email
+
+Verifies a user's email using a code.
+
+**Endpoint:** POST /api/profile/verify/{code}
+
+**Headers:**
 
 Authorization: Bearer <access_token>
-Response:
 
+**Response:**
+
+```json
 {
-"message": "Email is successfully verified",
-"profile": {
-"id": "user_id",
-"username": "john_doe",
-"email": "john.doe@example.com",
-"verified": true
+  "message": "Email is successfully verified",
+  "profile": {
+    "id": "user_id",
+    "username": "john_doe",
+    "email": "john.doe@example.com",
+    "verified": true
+  }
 }
-} 2. Get Profile
+```
+
+## 2. 📄 Get Profile
+
 Fetches the profile of the authenticated user.
 
-Endpoint: POST /api/profile/profile
-Headers:
+**Endpoint:** POST /api/profile/profile
+
+**Headers:**
 
 Authorization: Bearer <access_token>
 Response:
 
+```json
 {
-"id": "user_id",
-"username": "john_doe",
-"email": "john.doe@example.com",
-"verified": true
+  "id": "user_id",
+  "username": "john_doe",
+  "email": "john.doe@example.com",
+  "verified": true
 }
+```
 
-Testing
-Tools: Use Postman or Swagger UI to test endpoints.
-Setup: Import the environment variables and start the FastAPI server using:
-bash
-Copy code
+## 🛠️ Testing the API
+
+**Tools**
+Use **Postman** or **Swagger UI** to test endpoints. 🚀
+
+**Setup**
+Import the environment variables and start the FastAPI server using the command:
+
+```bash
 uvicorn main:app --reload
-Use Swagger UI at http://localhost:8000/docs for API exploration.
+```
+
+Visit Swagger UI at http://localhost:8000/docs for API exploration. 🧐
