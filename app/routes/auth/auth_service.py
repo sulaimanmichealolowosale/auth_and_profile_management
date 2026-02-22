@@ -38,7 +38,7 @@ class AuthService:
             
             # Send the verification code to the user's email
             await send_email(
-                subject="Welcome to Multivendor Restaurants!",
+                subject="Welcome to Profile Management!",
                 recipients=[model.email],
                 body=email_body,
             )
