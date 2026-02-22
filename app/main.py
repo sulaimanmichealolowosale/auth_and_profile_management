@@ -18,3 +18,5 @@ app_route = Route(
 @app.get('/')
 def main():
     return {"message":"You are welcome"}
+
+# uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
